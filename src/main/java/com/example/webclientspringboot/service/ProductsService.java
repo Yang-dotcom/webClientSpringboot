@@ -1,5 +1,6 @@
 package com.example.webclientspringboot.service;
 
+import com.example.webclientspringboot.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -43,6 +44,34 @@ public class ProductsService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
     }
+
+
+    public Mono<Product> postProduct(Product requestBody) {
+        return webClient.post()
+                .uri("/products/add")
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(Product.class);
+
+    }
+
+    public Mono<Map<String, Object>> updateProduct(int id, Map<String, Object> requestBody) {
+        return webClient.put()
+                .uri("/products/{id}", id)
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+    }
+
+    public Mono<Map<String, Object>> deleteProduct(int id) {
+        return webClient.delete()
+                .uri("/products/{id}", id)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+    }
+
 
 
 }
